@@ -50,7 +50,7 @@ public class Brush implements Comparable {
      * default values registered on config as the default brush.
      */
     public Brush() {
-        amountOfValidBrushes = Session.initializeValidBrushes();
+        amountOfValidBrushes = Session.amountOfValidBrushes();
         if (amountOfValidBrushes == 0) {
             this.name = "No brushes installed";
         } else {

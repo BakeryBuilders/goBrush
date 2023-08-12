@@ -101,7 +101,8 @@ public class CommandHandler implements CommandExecutor {
                         "gobrush.admin")) {
                     GoBrushPlugin.getPlugin().reloadConfig();
                     Session.getConfig().reload(GoBrushPlugin.getPlugin().getConfig());
-                    int amountOfValidBrushes = Session.initializeValidBrushes();
+                    //int amountOfValidBrushes = Session.initializeValidBrushes();
+                    int amountOfValidBrushes = Session.amountOfValidBrushes();
                     GoBrushPlugin.getPlugin().getLogger().log(Level.INFO, "Registered {0} brushes.", amountOfValidBrushes);
                     Session.initializeBrushMenu();
                     Session.initializeBrushPlayers();

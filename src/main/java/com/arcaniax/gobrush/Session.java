@@ -51,6 +51,8 @@ public class Session {
     private static WorldEditPlugin worldEdit;
     private static BrushMenu brushMenu;
 
+    private static int amountOfValidBrushes;
+
     /**
      * This method initializes the HashMap containing the BrushPlayer objects.
      * Calling this method will reset the player configurations, only use this
@@ -70,13 +72,13 @@ public class Session {
      *
      * @return The amount of brushes that have been initialized.
      */
-    public static int initializeValidBrushes() {
+    public static void initializeValidBrushes() {
         validBrushes = new HashMap<>();
-        AtomicInteger amountOfValidBrushes = new AtomicInteger();
+        //AtomicInteger amountOfValidBrushes = new AtomicInteger();
         File dir = new File(GoBrushPlugin.getPlugin().getDataFolder() + "/brushes");
         if (!dir.exists()) {
             dir.mkdir();
-            return 0;
+            amountOfValidBrushes = 0;
         }
         File[] brushes = dir.getAbsoluteFile().listFiles();
         IntStream.range(0, brushes.length).parallel().forEach(value -> {
@@ -85,10 +87,13 @@ public class Session {
                     .getName()
                     .endsWith(".jpg")) || (file.getName().endsWith(".jpeg")))) {
                 Session.addBrush(new Brush(file.getName()));
-                amountOfValidBrushes.getAndIncrement();
+                amountOfValidBrushes += 1;
             }
         });
-        return amountOfValidBrushes.get();
+    }
+
+    public static int amountOfValidBrushes() {
+        return amountOfValidBrushes;
     }
 
     /**
