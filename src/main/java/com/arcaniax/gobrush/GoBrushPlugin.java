@@ -74,12 +74,12 @@ public class GoBrushPlugin extends JavaPlugin {
         PaperLib.suggestPaper(this);
         //amountOfValidBrushes = Session.initializeValidBrushes();
         amountOfValidBrushes = Session.amountOfValidBrushes();
-        Metrics metrics = new Metrics(this, BSTATS_ID);
+        /*Metrics metrics = new Metrics(this, BSTATS_ID);
 
         metrics.addCustomChart(new SimplePie(
                 "worldeditImplementation",
                 () -> Bukkit.getPluginManager().getPlugin("FastAsyncWorldEdit") != null ? "FastAsyncWorldEdit" : "WorldEdit"
-        ));
+        ));*/
 
         try {
             Class.forName("org.bukkit.generator.WorldInfo");
