@@ -20,7 +20,12 @@ package com.arcaniax.gobrush.util;
 
 import com.arcaniax.gobrush.Session;
 import com.arcaniax.gobrush.object.BrushPlayer;
+import com.fastasyncworldedit.core.Fawe;
+import com.fastasyncworldedit.core.queue.implementation.QueueHandler;
 import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.LocalSession;
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.Vector3;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -39,12 +44,10 @@ public class BrushPlayerUtil {
     public static Location getClosest(Player player, Location _loc, Location l, int brushSize, EditSession session) {
         Location loc = _loc.clone();
         Location locPrev = loc.clone();
-
         Block locBlock = loc.getBlock();
         Material locMaterial = locBlock.getType();
         Material air = XMaterial.AIR.parseMaterial();
         Vector v = player.getEyeLocation().getDirection().multiply(0.5);
-
         while (locMaterial == air
                 || (!(session.getMask() == null || session.getMask().test(Vector3
                 .at(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())
@@ -58,7 +61,6 @@ public class BrushPlayerUtil {
                 locMaterial = locBlock.getType();
             }
             locPrev = loc.clone();
-
             if (newBlockPos && !BlockUtils.isLoaded(loc)) {
                 return null;
             }

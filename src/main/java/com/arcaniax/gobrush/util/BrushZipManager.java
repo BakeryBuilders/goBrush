@@ -37,7 +37,7 @@ public class BrushZipManager {
 
     public static void setupBrushes() {
         try {
-            amountOfValidBrushes = Session.initializeValidBrushes();
+            amountOfValidBrushes = Session.amountOfValidBrushes();
             if (amountOfValidBrushes == 0) {
                 GoBrushPlugin.getPlugin().getLogger().log(Level.INFO, "Downloading brushes from GitHub, please wait...");
                 try (BufferedInputStream bufferedInputStream = new BufferedInputStream(new URL(
@@ -56,7 +56,8 @@ public class BrushZipManager {
                         ZipFile zipFile = new ZipFile(GoBrushPlugin.getPlugin().getDataFolder() + "/brushes/brushes.zip");
                         zipFile.extractAll(GoBrushPlugin.getPlugin().getDataFolder() + "/brushes/");
                         GoBrushPlugin.getPlugin().reloadConfig();
-                        int amountOfValidBrushes = Session.initializeValidBrushes();
+                        //int amountOfValidBrushes = Session.initializeValidBrushes();
+                        int amountOfValidBrushes = Session.amountOfValidBrushes();
                         Session.getConfig().reload(GoBrushPlugin.getPlugin().getConfig());
                         Session.initializeBrushMenu();
                         Session.initializeBrushPlayers();

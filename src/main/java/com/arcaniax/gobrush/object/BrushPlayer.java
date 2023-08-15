@@ -52,7 +52,7 @@ public class BrushPlayer {
         this._3dmode = Session.getConfig().isDefaultBoundingBox();
         this.autoRotation = Session.getConfig().isDefaultAutoRotation();
         this.brushEnabled = Session.getConfig().isDefaultBrushEnabled();
-        this.brush = new Brush();
+        //this.brush = new Brush();
     }
 
     /**
@@ -191,6 +191,7 @@ public class BrushPlayer {
      * @return The brush that the user has selected.
      */
     public Brush getBrush() {
+        if (brush == null) this.brush = new Brush();
         return brush;
     }
 
