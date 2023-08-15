@@ -43,85 +43,58 @@ public class BrushPlayerUtil {
 
     public static Location getClosest(Player player, Location _loc, Location l, int brushSize, EditSession session) {
         Location loc = _loc.clone();
-        final Location[] locPrev = {loc.clone()};
-
-        final Block[] locBlock = {loc.getBlock()};
-        final Material[] locMaterial = {locBlock[0].getType()};
+        Location locPrev = loc.clone();
+        Block locBlock = loc.getBlock();
+        Material locMaterial = locBlock.getType();
         Material air = XMaterial.AIR.parseMaterial();
         Vector v = player.getEyeLocation().getDirection().multiply(0.5);
-
-        LocalSession localSession = WorldEdit.getInstance().getSessionManager().get(BukkitAdapter.adapt(player));
-        QueueHandler queue = Fawe.instance().getQueueHandler();
-        queue.async(() -> {
-            synchronized (localSession) {
-                try {
-                    while (locMaterial[0] == air
-                            || (!(session.getMask() == null || session.getMask().test(Vector3
-                            .at(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())
-                            .toBlockPoint())))
-                            && (loc.distance(l.clone().add(0.5, 0.5, 0.5)) < ((double) brushSize / (double) 4))) {
-                        loc.add(v);
-                        boolean newBlockPos =
-                                (loc.getBlockX() != locPrev[0].getBlockX() || loc.getBlockY() != locPrev[0].getBlockY() || loc.getBlockZ() != locPrev[0].getBlockZ());
-                        if (newBlockPos) {
-                            locBlock[0] = loc.getBlock();
-                            locMaterial[0] = locBlock[0].getType();
-                        }
-                        locPrev[0] = loc.clone();
-
-                        if (newBlockPos && !BlockUtils.isLoaded(loc)) {
-                            return;
-                        }
-                        if (loc.getBlockY() <= BlockUtils.getWorldMin(loc)) {
-                            break;
-                        }
-                        if (loc.getBlockY() > BlockUtils.getWorldMax(loc)) {
-                            return;
-                        }
-                        if (loc.distance(_loc) > 200) {
-                            return;
-                        }
-                    }
-                } finally {
-                    localSession.remember(session);
-                }
+        while (locMaterial == air
+                || (!(session.getMask() == null || session.getMask().test(Vector3
+                .at(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())
+                .toBlockPoint())))
+                && (loc.distance(l.clone().add(0.5, 0.5, 0.5)) < ((double) brushSize / (double) 4))) {
+            loc.add(v);
+            boolean newBlockPos =
+                    (loc.getBlockX() != locPrev.getBlockX() || loc.getBlockY() != locPrev.getBlockY() || loc.getBlockZ() != locPrev.getBlockZ());
+            if (newBlockPos) {
+                locBlock = loc.getBlock();
+                locMaterial = locBlock.getType();
             }
-        });
-
-
+            locPrev = loc.clone();
+            if (newBlockPos && !BlockUtils.isLoaded(loc)) {
+                return null;
+            }
+            if (loc.getBlockY() <= BlockUtils.getWorldMin(loc)) {
+                break;
+            }
+            if (loc.getBlockY() > BlockUtils.getWorldMax(loc)) {
+                return null;
+            }
+            if (loc.distance(_loc) > 200) {
+                return null;
+            }
+        }
         return loc;
     }
 
     public static Location getClosest(Player player) {
         Location loc = player.getEyeLocation();
-
-        EditSession session = WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(player.getWorld()));
-        LocalSession localSession = WorldEdit.getInstance().getSessionManager().get(BukkitAdapter.adapt(player));
-        QueueHandler queue = Fawe.instance().getQueueHandler();
-        queue.async(() -> {
-            synchronized (localSession) {
-                try {
-                    while (loc.getBlock().getType() == XMaterial.AIR.parseMaterial()) {
-                        Vector v = player.getEyeLocation().getDirection();
-                        loc.add(v.multiply(0.5));
-                        if (!BlockUtils.isLoaded(loc)) {
-                            return;
-                        }
-                        if (loc.getBlockY() <= BlockUtils.getWorldMin(loc)) {
-                            break;
-                        }
-                        if (loc.getBlockY() > BlockUtils.getWorldMax(loc)) {
-                            return;
-                        }
-                        if (loc.distance(player.getEyeLocation()) > 200) {
-                            return;
-                        }
-                    }
-                } finally {
-                    localSession.remember(session);
-                }
+        while (loc.getBlock().getType() == XMaterial.AIR.parseMaterial()) {
+            Vector v = player.getEyeLocation().getDirection();
+            loc.add(v.multiply(0.5));
+            if (!BlockUtils.isLoaded(loc)) {
+                return null;
             }
-        });
+            if (loc.getBlockY() <= BlockUtils.getWorldMin(loc)) {
+                break;
+            }
+            if (loc.getBlockY() > BlockUtils.getWorldMax(loc)) {
+                return null;
+            }
+            if (loc.distance(player.getEyeLocation()) > 200) {
+                return null;
+            }
+        }
         return loc;
     }
 
