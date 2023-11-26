@@ -35,6 +35,7 @@ import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.math.Vector3;
 import com.sk89q.worldedit.world.block.BlockState;
 import com.sk89q.worldedit.world.block.BlockTypes;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -99,6 +100,10 @@ public class PlayerInteractListener implements Listener {
             QueueHandler queue = Fawe.instance().getQueueHandler();
             queue.async(() -> {
                 synchronized (localSession) {
+                    if (Bukkit.getPlayer(event.getPlayer().getName()) == null) {
+                        // player probably logged out
+                        return;
+                    }
                     EditSession editsession = localSession.createEditSession(BukkitAdapter.adapt(event.getPlayer()));
                     try {
                         HashMap<Vector3, BlockState> blocksToSet = new HashMap<>();
