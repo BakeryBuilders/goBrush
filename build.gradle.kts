@@ -7,8 +7,8 @@ plugins {
    `java-library`
 
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("com.diffplug.spotless") version "6.20.0"
-    id("org.ajoberstar.grgit") version "5.2.0"
+    id("com.diffplug.spotless") version "6.23.2"
+    id("org.ajoberstar.grgit") version "5.2.1"
 
     idea
     eclipse
@@ -35,9 +35,9 @@ repositories {
 }
 
 dependencies {
-    implementation(platform("com.intellectualsites.bom:bom-newest:1.34"))
+    implementation(platform("com.intellectualsites.bom:bom-newest:1.39"))
     compileOnly("io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT")
-    compileOnly("net.md-5:bungeecord-api:1.19-R0.1-SNAPSHOT")
+    compileOnly("net.md-5:bungeecord-api:1.20-R0.1")
     compileOnly("com.mojang:authlib:1.5.25")
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit")
     implementation("net.lingala.zip4j:zip4j:2.11.5")
@@ -83,7 +83,7 @@ tasks.named<ShadowJar>("shadowJar") {
             include(dependency("net.lingala.zip4j:zip4j"))
         }
         relocate("org.incendo.serverlib", "com.arcaniax.gobrush.serverlib") {
-            include(dependency("dev.notmyfault.serverlib:ServerLib:2.3.1"))
+            include(dependency("dev.notmyfault.serverlib:ServerLib:2.3.4"))
         }
         relocate("org.bstats", "com.arcaniax.gobrush.metrics") {
             include(dependency("org.bstats:bstats-base"))
