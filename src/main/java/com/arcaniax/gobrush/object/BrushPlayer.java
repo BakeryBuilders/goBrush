@@ -19,6 +19,10 @@
 package com.arcaniax.gobrush.object;
 
 import com.arcaniax.gobrush.Session;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.extension.platform.Actor;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
@@ -31,7 +35,7 @@ import java.util.UUID;
 public class BrushPlayer {
 
     private UUID uuid;
-    private int brushSize, brushIntensity;
+    private int brushSize, weBrushLimit, brushIntensity;
     private boolean brushEnabled, flatMode, directionMode, _3dmode, autoRotation;
     private Brush brush;
 
@@ -210,7 +214,14 @@ public class BrushPlayer {
      * @return The maximum brush size that the user can select.
      */
     public int getMaxBrushSize() {
-        return Session.getConfig().getMaxBrushSize();
+        Player player = Bukkit.getPlayer(uuid);
+        int gbBrushLimit = Session.getConfig().getMaxBrushSize();
+        int weBrushLimit = gbBrushLimit;
+        if (player != null) {
+            Actor actor = BukkitAdapter.adapt(player);
+            weBrushLimit = actor.getLimit().MAX_BRUSH_RADIUS;
+        }
+        return Math.min(gbBrushLimit, weBrushLimit);
     }
 
     /**

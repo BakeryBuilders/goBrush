@@ -42,10 +42,9 @@ public class CommandHandler implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("gobrush") || cmd.getName().equalsIgnoreCase("gb")) {
-            if (!(sender instanceof Player)) {
+            if (!(sender instanceof final Player p)) {
                 return false;
             }
-            final Player p = (Player) sender;
             BrushPlayer bp = Session.getBrushPlayer(p.getUniqueId());
             if (!p.hasPermission("gobrush.use")) {
                 p.sendMessage(ChatColor.translateAlternateColorCodes(
